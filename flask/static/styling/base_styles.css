@@ -1,0 +1,26 @@
+body{
+    background-image: url("https://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg");
+}
+
+.title{
+    color: aquamarine;
+    text-align: center;
+    padding: 30px;
+}
+
+.text{
+    color: aquamarine;
+    text-align: center;
+    padding: 30px;
+}
+
+.listing{
+    color:aquamarine;
+    text-align: center;
+    padding: 30px;
+}
+
+.login{
+    margin-left: 600px;
+    margin-top: 30px;
+}
