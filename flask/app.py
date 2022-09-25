@@ -110,14 +110,7 @@ def logout():
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    form = UpdateAccountForm()
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        db.session.commit()
-        return redirect(url_for('account'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-    return render_template('account.html', form=form)
+    return render_template('account.html')
 
 
 if __name__ == "__main__":
