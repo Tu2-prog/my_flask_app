@@ -31,11 +31,15 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=FALSE)
+    surname = db.Column(db.String, nullable=FALSE)
     username = db.Column(db.String(20), nullable=FALSE, unique=TRUE)
     password = db.Column(db.String(80), nullable=FALSE)
 
 
 class RegistrationForm(FlaskForm):
+    name = StringField(validators=[InputRequired()], render_kw={'placeholder':'Name'})
+    surname = StringField(validators=[InputRequired()], render_kw={'placeholder':'Last Name'})
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={'placeholder': 'Username'})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={'placeholder': 'Password'})
     submit = SubmitField("Register")
@@ -91,7 +95,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bycrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password)
+        new_user = User(name = form.name.data, surname = form.surname.data, username=form.username.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))

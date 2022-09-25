@@ -4,10 +4,23 @@ Register
 {%endblock%} 
 
 {%block content%} 
-<form method="post">
-    {{form.hidden_tag()}}
-    {{form.username}}
-    {{form.password}}
-    {{form.submit}}
-</form>
+<div class="container w-50">
+    <form method="post">
+        {{form.hidden_tag()}}
+        <fieldset>
+            <legend class="border-bottom mb-4 text">Join Today</legend>
+        <div class="form-group">
+            {{form.name.label(class="form-control-label text")}}
+            {{form.name(class="form-control form-control-lg")}}
+            {{form.surname.label(class="form-control-label text")}}
+            {{form.surname(class="form-control form-control-lg")}}
+            {{form.username.label(class="form-control-label text")}}
+            {{form.username(class="form-control form-control-lg")}}
+            {{form.password.label(class="form-control-label text")}}
+            {{form.password(class="form-control form-control-lg")}}
+            {{form.submit(class="login")}}
+        </div>
+        </fieldset>
+    </form>
+    </div>
 {%endblock%}
