@@ -85,6 +85,7 @@ def login():
                 return redirect(url_for('shopping_home'))
     return render_template('log_in.html', form=form)
 
+'''Jamal Bugti 5:29 video no. 19'''
 @app.route('/home')
 @login_required
 def shopping_home():
