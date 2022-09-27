@@ -1,4 +1,5 @@
 from crypt import methods
+from email.mime import image
 from email.policy import default
 from enum import unique
 from glob import escape
@@ -11,7 +12,7 @@ from flask import Flask, url_for, request, redirect, render_template, session, f
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_required, login_user, LoginManager, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, validators, IntegerField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, validators, IntegerField, TextAreaField, FloatField
 from wtforms.validators import InputRequired, Length, ValidationError, DataRequired, Email
 from flask_wtf.file import FileField, FileAllowed , FileRequired
 from flask_bcrypt import Bcrypt
@@ -43,7 +44,6 @@ class Product(db.Model):
     discount = db.Column(db.Integer, nullable=FALSE)
     stock = db.Column(db.Integer, nullable=FALSE)
     desc = db.Column(db.Text, nullable=FALSE)
-    image_1 = db.Column(db.String(150), nullable=FALSE, default="image.jpg")
     
 
 
@@ -78,23 +78,12 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That username is taken. Please choose a different one.')
 
 class AddProductForm(FlaskForm):
-    title = StringField(validators=[InputRequired(), Length(min=5, max=150), DataRequired()],
-                        render_kw={'placeholder': 'Title'})
-    price = IntegerField('Price', validators=[InputRequired(), DataRequired()])
-    discount = IntegerField('Discount', validators=[InputRequired(), DataRequired()], default=0)
-    stock = IntegerField('Stock', validators=[InputRequired(), DataRequired()])
-    desc = TextAreaField('Description', validators=[DataRequired(), InputRequired()])
-    image_1 = FileField('Image 1', validators=[FileRequired(), FileAllowed(['jpg', 'png', 'gif', 'jpeg'])])
-    submit = SubmitField("submit")
-    def validate_title(self, title):
-        existing_title = User.query.filter_by(
-            title = title.data
-        ).first()
-        if existing_title:
-            raise ValidationError(
-                "This title already exists. Please choose a different one."
-            )
-
+    title = StringField('Title', [validators.DataRequired()])
+    price = FloatField('Price', [validators.DataRequired()])
+    discount = IntegerField('Discount', default=0)
+    stock = IntegerField('Stock', [validators.DataRequired()])
+    description = TextAreaField('Description', [validators.DataRequired()])
+    submit = SubmitField('Submit')
 
 @app.route('/')
 def index():
@@ -147,15 +136,19 @@ def account():
 
 @app.route("/addproduct", methods=["GET", "POST"])
 def addproduct():
-    form = AddProductForm()
+    form = AddProductForm(request.form)
     if form.validate_on_submit():
+        title = form.title.data
+        price = form.price.data
+        discount = form.discount.data
+        stock = form.stock.data
+        desc = form.description.data
         new_prod = Product(
-            title = form.title.data, 
-            price = form.price.data,
-            discount = form.discount.data,
-            stock = form.stock.data,
-            desc = form.desc.data,
-            image_1 = form.image_1.data
+            title = title,
+            price = price,
+            discount = discount,
+            stock = stock,
+            desc = desc
         )
         db.session.add(new_prod)
         db.session.commit()
