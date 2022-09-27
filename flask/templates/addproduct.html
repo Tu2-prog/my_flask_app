@@ -1,0 +1,37 @@
+{%extends 'base.html'%}
+{%block title%}
+Add Product
+{%endblock%} 
+
+{%block content%} 
+<div class="container w-50">
+<form method="post">
+    {{form.hidden_tag()}}
+    <fieldset>
+        <legend class="border-bottom mb-4 text">Add Product</legend>
+    <div class="form-group">
+        {{form.title.label(class="form-control-label text")}}
+        {{form.title(class="form-control form-control-lg")}}
+        
+        {{form.price.label(class="form-control-label text")}}
+        {{form.price(class="form-control form-control-lg")}}
+        
+        {{form.discount.label(class="form-control-label text")}}
+        {{form.discount(class="form-control form-control-lg")}}
+        
+        {{form.stock.label(class="form-control-label text")}}
+        {{form.stock(class="form-control form-control-lg")}}
+        
+        {{form.desc.label(class="form-control-label text")}}
+        {{form.desc(class="form-control form-control-lg")}}
+        
+        {{form.image_1.label(class="form-control-label text")}}
+        {{form.image_1(class="form-control form-control-lg")}}
+        
+        {{form.submit(class="login")}}
+    </div>
+    </fieldset>
+</form>
+</div>
+
+{%endblock%}
