@@ -2,11 +2,14 @@ from crypt import methods
 from email.mime import image
 from email.policy import default
 from enum import unique
+from fileinput import filename
 from glob import escape
 from pickle import FALSE, TRUE
+import secrets
 from sre_constants import IN
 from tokenize import String
 from typing import Text
+from unicodedata import name
 from wsgiref.validate import validator
 from flask import Flask, url_for, request, redirect, render_template, session, flash 
 from flask_sqlalchemy import SQLAlchemy
@@ -17,12 +20,21 @@ from wtforms.validators import InputRequired, Length, ValidationError, DataRequi
 from flask_wtf.file import FileField, FileAllowed , FileRequired
 from flask_bcrypt import Bcrypt
 import os  
+from flask_uploads import UploadSet, configure_uploads, IMAGES
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
 bycrypt = Bcrypt(app)
+basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "\xb0(I\xc3\xe3E\x84\xd6\xc9@\x13<\x1cG\xfa\xc6H)\xcc*\xbc\xd6\xf6\xa4"
+
+app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, '/static/images')
+photos = UploadSet('photos', IMAGES)
+configure_uploads(app, photos)
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -44,6 +56,10 @@ class Product(db.Model):
     discount = db.Column(db.Integer, nullable=FALSE)
     stock = db.Column(db.Integer, nullable=FALSE)
     desc = db.Column(db.Text, nullable=FALSE)
+    img = db.Column(db.Text, unique=True, nullable=False)
+    img_name = db.Column(db.Text, nullable=False)
+    mimetype = db.Column(db.Text, nullable=False)
+    
     
 
 
@@ -83,6 +99,7 @@ class AddProductForm(FlaskForm):
     discount = IntegerField('Discount', default=0)
     stock = IntegerField('Stock', [validators.DataRequired()])
     description = TextAreaField('Description', [validators.DataRequired()])
+    image = FileField('Add an image for', validators=[FileRequired()])
     submit = SubmitField('Submit')
 
 @app.route('/')
@@ -137,7 +154,12 @@ def account():
 @app.route("/addproduct", methods=["GET", "POST"])
 def addproduct():
     form = AddProductForm(request.form)
-    if form.validate_on_submit():
+    if request.method == 'POST':
+        image = request.files['pic']
+        if not image:
+            return "Pic not uploaded", 400
+        filename = secure_filename(image.filename)
+        mimetype = image.mimetype
         title = form.title.data
         price = form.price.data
         discount = form.discount.data
@@ -148,11 +170,14 @@ def addproduct():
             price = price,
             discount = discount,
             stock = stock,
-            desc = desc
+            desc = desc,
+            img = image.read(),
+            mimetype = mimetype,
+            img_name = filename
         )
         db.session.add(new_prod)
         db.session.commit()
-        return redirect(url_for('addproduct'))
+        return redirect(url_for('login'))
     else:
         return render_template('addproduct.html', form=form)
     

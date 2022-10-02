@@ -4,31 +4,29 @@ Add Product
 {%endblock%} 
 
 {%block content%} 
-<div class="container w-50">
-<form method="post">
-    {{form.hidden_tag()}}
-    <fieldset>
-        <legend class="border-bottom mb-4 text">Add Product</legend>
-    <div class="form-group">
-        {{form.title.label(class="form-control-label text")}}
-        {{form.title(class="form-control form-control-lg")}}
-        
-        {{form.price.label(class="form-control-label text")}}
-        {{form.price(class="form-control form-control-lg")}}
-        
-        {{form.discount.label(class="form-control-label text")}}
-        {{form.discount(class="form-control form-control-lg")}}
-        
-        {{form.stock.label(class="form-control-label text")}}
-        {{form.stock(class="form-control form-control-lg")}}
-        
-        {{form.description.label(class="form-control-label text")}}
-        {{form.description(class="form-control form-control-lg")}}
-        
-        {{form.submit(class="login")}}
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="text-center bg-info p-2 h4">Add a product</div>
+                {% from "_formhelpers.html" import render_field %}
+                <form method="post" enctype="multipart/form-data">
+                <div>
+                    {{ render_field(form.title, class="form-control") }}
+                    {{ render_field(form.price, class="form-control") }}
+                    {{ render_field(form.discount, class="form-control") }}
+                    {{ render_field(form.stock, class="form-control") }}
+                    {{ render_field(form.description, class="form-control", rows="10") }}
+                </div>
+                <div class="container">
+                    <input type="file" name="pic" />
+                    <input type="submit" value="Upload a file"/>                    
+                </div>
+                </form>
+            </div>
+      <div class="col-md-1"></div>
     </div>
-    </fieldset>
-</form>
+</div></form>
 </div>
 
 {%endblock%}
