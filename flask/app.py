@@ -5,7 +5,6 @@ from enum import unique
 from fileinput import filename
 from glob import escape
 from pickle import FALSE, TRUE
-import secrets
 from sre_constants import IN
 from tokenize import String
 from typing import Text
@@ -15,9 +14,9 @@ from flask import Flask, url_for, request, redirect, render_template, session, f
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_required, login_user, LoginManager, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, validators, IntegerField, TextAreaField, FloatField
-from wtforms.validators import InputRequired, Length, ValidationError, DataRequired, Email
-from flask_wtf.file import FileField, FileAllowed , FileRequired
+from wtforms import StringField, PasswordField, SubmitField, validators, IntegerField, TextAreaField, FloatField
+from wtforms.validators import InputRequired, Length, ValidationError, DataRequired
+from flask_wtf.file import FileField, FileRequired
 from flask_bcrypt import Bcrypt
 import os  
 from flask_uploads import UploadSet, configure_uploads, IMAGES
@@ -62,6 +61,12 @@ class Product(db.Model):
     img_name = db.Column(db.Text, nullable=False)
     mimetype = db.Column(db.Text, nullable=False)
     
+class Admin(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=TRUE)
+    name = db.Column(db.String, nullable=FALSE)
+    sur_name = db.Column(db.String, nullable=FALSE)
+    admin_name = db.Column(db.String(20), nullable=FALSE, unique=TRUE)
+    password = db.Column(db.String(80), nullable=FALSE)
     
 
 
@@ -181,6 +186,16 @@ def addproduct():
         return redirect(url_for('login'))
     else:
         return render_template('addproduct.html', form=form)
+    
+@app.route('/admin')
+def admin():
+    form = LoginForm()
+    return render_template("admin.html", form=form)
+
+@app.route('/admin/setup')
+def admin_setup():
+    form = RegistrationForm()
+    return render_template("admin_setup.html", form=form)
     
 
 if __name__ == "__main__":
