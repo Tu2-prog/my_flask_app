@@ -31,7 +31,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "\xb0(I\xc3\xe3E\x84\xd6\xc9@\x13<\x1cG\xfa\xc6H)\xcc*\xbc\xd6\xf6\xa4"
 
-app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, '/static/images')
+app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/uploads')
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 
@@ -125,7 +125,9 @@ def login():
 @app.route('/home')
 @login_required
 def shopping_home():
-    return render_template('shopping_home.html')
+    page = request.args.get('page ',1, type=int)
+    products = Product.query.filter(Product.stock > 0).order_by(Product.id.desc()).paginate(page=page, per_page=8)
+    return render_template('shopping_home.html', products=products)
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -157,6 +159,7 @@ def addproduct():
         if not image:
             return "Pic not uploaded", 400
         filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOADED_PHOTOS_DEST'], filename))
         mimetype = image.mimetype
         title = form.title.data
         price = form.price.data
