@@ -57,7 +57,7 @@ class Product(db.Model):
     discount = db.Column(db.Integer, nullable=FALSE)
     stock = db.Column(db.Integer, nullable=FALSE)
     desc = db.Column(db.Text, nullable=FALSE)
-    img = db.Column(db.Text, unique=True, nullable=False)
+    img = db.Column(db.Text, nullable=False)
     img_name = db.Column(db.Text, nullable=False)
     mimetype = db.Column(db.Text, nullable=False)
     
