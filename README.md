@@ -1,62 +1,38 @@
-# Project Title
+# My_FLASK_APP
 
-Simple overview of use/purpose.
+This should be considered as a template ecommerce shop built with the python framework <strong>Flask</strong> as an API with a <strong>Docker</strong> container.
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+My_FLASK_APP offers everything one needs from an ecommerce shop. It offers admin functionality to manage the product information, but also to access
+User information in a database <strong>Sqlite3 and SQLAlchemy</strong>.  
 
 ## Getting Started
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+For executing the project Python3 and pip will be needed to install the necessary packages like Flask. It is recommended to have Docker installed 
+to build the docker image and to run it. 
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* The most simple way to install all necessary prerequisites is through 
+the docker container
 
-### Executing program
-
-* How to run the program
-* Step-by-step bullets
+```console
+$ docker build -t my-flask-app:latest .
 ```
-code blocks for commands
+
+```console
+$ docker run -p 5000:5000 my-flask-app
 ```
 
 ## Help
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+If questions arise with the project please contact me:
+<anhtduong.nguyen@outlook.de>
 
 ## Authors
 
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
-## Version History
-
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
-
-## License
-
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
-
-## Acknowledgments
-
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+Contributors:
+* Anh Tu Duong Nguyen <anhtuduong.nguyen@outlook.de>
