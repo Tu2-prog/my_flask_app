@@ -21,7 +21,6 @@ from wtforms import StringField, PasswordField, SubmitField, validators, Integer
 from wtforms.validators import InputRequired, Length, ValidationError, DataRequired
 from flask_wtf.file import FileField, FileRequired
 from flask_login import current_user
-from models import User 
 
 
 
