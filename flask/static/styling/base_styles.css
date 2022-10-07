@@ -11,6 +11,9 @@ body{
 .text{
     color: aquamarine;
     text-align: center;
+    margin-left: 350px;
+    margin-right: 350px;
+    font-size: 125%;
     padding: 30px;
 }
 
