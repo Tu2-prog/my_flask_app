@@ -91,6 +91,18 @@ class BaseTest(unittest.TestCase):
         res = self.app.get("/register")
         self.assertEqual(res.status_code, 200)    
         
+    
+    def test_register_redirect_to_log_in(self):
+        res = self.app.get("/register")
+        self.assertEqual(res.status_code, 200)
+        res = self.app.post("/register", data=dict(
+            name = "tim",
+            surname = "schneider",
+            username= "tsss",
+            password= "1111",
+            follow_redirects = True
+        ))
+        self.assertEqual(res.status_code, 200)        
         
     def test_addproduct_form(self):
         res = self.app.get("/addproduct")
