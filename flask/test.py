@@ -36,7 +36,7 @@ class BaseTest(unittest.TestCase):
             password="1111"
         )
         res = self.app.post("/login", data=dict(username=u.username,
-                                          password=u.password))
+                                          password=bycrypt.generate_password_hash(u.password)))
         self.assertEqual(res.status_code, 200)
         
     def test_log_out_redirect(self):
@@ -61,8 +61,8 @@ class BaseTest(unittest.TestCase):
             admin_name="rehabwert22",
             password="1111"
         )
-        db.session.add(a)
-        db.session.commit()
+        #db.session.add(a)
+        #db.session.commit()
         
         
     def test_admin_home(self):
