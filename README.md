@@ -11,20 +11,14 @@ User information in a database <strong>Sqlite3 and SQLAlchemy</strong>.
 
 ### Dependencies
 
-For executing the project Python3 and pip will be needed to install the necessary packages like Flask. It is recommended to have Docker installed 
-to build the docker image and to run it. 
+For executing the project Python3 and pip will be needed to install the necessary packages like Flask.
 
 ### Installing
 
-* The most simple way to install all necessary prerequisites is through 
-the docker container
+* The prerequisities are installed with the following command:
 
 ```console
-$ docker build -t my-flask-app:latest .
-```
-
-```console
-$ docker run -p 5000:5000 my-flask-app
+$ pip install -r requirements.txt
 ```
 
 ## Help
