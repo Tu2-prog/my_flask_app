@@ -10,7 +10,7 @@ from flask import url_for, request, redirect, render_template
 from flask_login import login_required, login_user, logout_user
 import os  
 from werkzeug.utils import secure_filename
-from flask import Flask
+from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_uploads import UploadSet, configure_uploads, IMAGES
@@ -112,7 +112,11 @@ class AddProductForm(FlaskForm):
     image = FileField('Add an image for', validators=[FileRequired()])
     submit = SubmitField('Submit')
 
-
+def MagerDicts(dict1,dict2):
+    if isinstance(dict1, list) and isinstance(dict2,list):
+        return dict1  + dict2
+    if isinstance(dict1, dict) and isinstance(dict2, dict):
+        return dict(list(dict1.items()) + list(dict2.items()))
 
 @app.route('/')
 def index():
@@ -199,6 +203,29 @@ def admin():
 def admin_setup():
     form = RegistrationForm()
     return render_template("admin_setup.html", form=form)
+
+@app.route('/addcart', methods=["POST"])
+def addcart():
+    try: 
+        product_id = request.form.get('product_id')
+        quantity = request.form.get('quantity')
+        product = addproduct.query.filter_by(id=product_id).first()
+        if product_id and quantity and request.method == "POST":
+            DicItems = {product_id:{'name': product.id, 'price': product.price, 'discount': product.discount, 'quantity': quantity, 'image': product.img_name}}
+            if 'ShoppingCart' in session:
+                print(session['Shoppingcart'])
+                if product_id in session['Shoppingcart']:
+                    print("This product is already in your cart")
+                else:
+                    session['Shoppingcart'] = MagerDicts(session['Shoppingcart'], DicItems)
+                    return redirect(request.referrer)
+            else:
+                session['Shoppingcart'] = DicItems
+                return redirect(request.referrer)
+    except Exception as e:
+        print(e)
+    finally:
+        return redirect(request.referrer)
     
 
 if __name__ == "__main__":
