@@ -17,7 +17,7 @@ Home
                     <h5 class="text-center">{{product.title}}</h5>
                     <p class="text-center">Price ${{product.price}}</p>
                     <div class="card-footer">
-                        <a href="#" class="float-left btn btn-sm btn-primary">
+                        <a href="{{url_for('single_page', id=product.id)}}" class="float-left btn btn-sm btn-primary">
                             details 
                         </a>
                         <form action="#" methods="POST">

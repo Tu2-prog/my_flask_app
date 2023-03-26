@@ -133,6 +133,12 @@ def login():
                 return redirect(url_for('shopping_home'))
     return render_template('log_in.html', form=form)
 
+@app.route('/product/<int:id>')
+@login_required
+def single_page(id):
+    product = Product.query.get_or_404(id)
+    return render_template('single_page.html', product=product)
+
 '''Jamal Bugti 5:29 video no. 19'''
 @app.route('/home')
 @login_required

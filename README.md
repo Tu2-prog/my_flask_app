@@ -1,6 +1,6 @@
 # My_FLASK_APP
 
-This should be considered as a template ecommerce shop built with the python framework <strong>Flask</strong> as an API with a <strong>Docker</strong> container.
+This should be considered as a template ecommerce shop built with the python framework <strong>Flask</strong>. 
 
 ## Description
 
